@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: youtube_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./downloads:/app/downloads
+      - ./bot.db:/app/bot.db
+    environment:
+      - PYTHONUNBUFFERED=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # PostgreSQL ishlatish uchun (opsional)
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: youtube_bot_db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: youtube_bot
+  #     POSTGRES_USER: bot_user
+  #     POSTGRES_PASSWORD: your_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:
